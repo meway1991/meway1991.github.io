@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>搭建iOS上的OCR应用 | 孟伟的技术博客</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="一步一步搭建iOS平台的OCR应用">
+<meta property="og:type" content="article">
+<meta property="og:title" content="搭建iOS上的OCR应用">
+<meta property="og:url" content="http://luser.cn/2015/10/14/2015-10-14-create-ocr-app-on-ios-1/index.html">
+<meta property="og:site_name" content="孟伟的技术博客">
+<meta property="og:description" content="一步一步搭建iOS平台的OCR应用">
+<meta property="og:image" content="http://luser.cn/!--￼4-->/images/1AAFC743-362E-435E-A5D7-10C241E93095.png">
+<meta property="og:image" content="http://luser.cn/!--￼5-->/images/667D2BFC-B5FE-4C83-8F05-3458EFD3940E.png">
+<meta property="og:image" content="http://luser.cn/!--￼6-->/images/0FB08BDF-FEC7-4C29-ACC0-08839E2BFFEA.png">
+<meta property="og:image" content="http://luser.cn/!--￼7-->/images/726E3692-0767-451B-A6C0-632ED19E095B.png">
+<meta property="og:image" content="http://luser.cn/!--￼8-->/images/53CF4C8D-36E9-4128-BB40-BAE76BC79CA4.png">
+<meta property="og:updated_time" content="2015-10-16T02:50:20.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="搭建iOS上的OCR应用">
+<meta name="twitter:description" content="一步一步搭建iOS平台的OCR应用">
+<meta name="twitter:image" content="http://luser.cn/!--￼4-->/images/1AAFC743-362E-435E-A5D7-10C241E93095.png">
+  
+    <link rel="alternate" href="/atom.xml" title="孟伟的技术博客" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">孟伟的技术博客</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">野生程序猿修炼之道</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://luser.cn"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-2015-10-14-create-ocr-app-on-ios-1" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2015/10/14/2015-10-14-create-ocr-app-on-ios-1/" class="article-date">
+  <time datetime="2015-10-14T08:14:03.000Z" itemprop="datePublished">2015-10-14</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/iOS/">iOS</a>►<a class="article-category-link" href="/categories/iOS/OCR/">OCR</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      搭建iOS上的OCR应用
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>这两天在学习OCR相关的东西，还是挺好玩的。有很多算法还没有看懂，还需要慢慢去研究，这篇博客就记录一下搭建OCR应用遇到的那些坑吧，以后遇到坑了还可以回头看看…文章最后有本文demo，没有耐心看教程的可以直接下载demo去研究…</p>
+<p>好了，开始动手！</p>
+<a id="more"></a>
+<ul>
+<li><p>新建一个<code>Single View Application</code>工程，命名为<code>TestOCR</code>。</p>
+</li>
+<li><p>添加Podfile文件，在Podfile文件里添加以下代码，然后到终端执行<code>pod install</code>，就可以在项目里添加用来<code>OCR</code>扫描的第三方库了，关于这个库的介绍，请看文章底部的资料篇（关于<code>CocoaPods</code>的教程，请自行谷歌…）</p>
+</li>
+</ul>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">platform :ios, "7.0"</span><br><span class="line"></span><br><span class="line">pod 'TesseractOCRiOS'</span><br></pre></td></tr></table></figure>
+<ul>
+<li><p>引入<code>TesseractOCRiOS</code>库之后，还需要自行去下载相应的用来识别的语言文件，地址<a href="https://code.google.com/p/tesseract-ocr/downloads/list" target="_blank" rel="external">走你!</a>（ps：需要翻墙），我们下载一个英文的语言文件，名称为<code>tesseract-ocr-3.02.eng.tar.gz</code>，下载之后是一个压缩包，解压缩之后，将里面的<code>tessdata</code>放入工程文件目录下，（和<code>AppDelegate.h</code>文件同级目录）。</p>
+</li>
+<li><p>使用新生成的<code>TestOCR.xcworkspace</code>打开工程项目，将刚才放入工程的<code>tessdata</code>文件夹引入工程，注意，选择时需要设置为<code>引用</code>，见下图：</p>
+<p>  <img src="!--￼4--&gt;/images/1AAFC743-362E-435E-A5D7-10C241E93095.png" alt=""></p>
+</li>
+<li><p>现在，你的工程目录结构应该如下图所示，图1的文件夹应该是蓝色</p>
+<p>  <img src="!--￼5--&gt;/images/667D2BFC-B5FE-4C83-8F05-3458EFD3940E.png" alt=""></p>
+</li>
+<li><p><code>TesseractOCRiOS</code>库的配置到这里就结束了，下面来开始做一个简单的应用界面，切换到<code>Main.storyboard</code>，选择<code>View Controller</code>对应的<code>scene</code>，在<code>File inspector</code>里取消<code>Size Classes</code>的勾选（默认是选中的）</p>
+<p>  <img src="!--￼6--&gt;/images/0FB08BDF-FEC7-4C29-ACC0-08839E2BFFEA.png" alt=""></p>
+</li>
+<li><p>在<code>View Controller</code>的<code>View</code>里添加3个子视图，一个<code>UIbutton</code>,一个<code>UIImageView</code>和一个<code>UITextView</code>，见下图</p>
+<p>  <img src="!--￼7--&gt;/images/726E3692-0767-451B-A6C0-632ED19E095B.png" alt=""></p>
+</li>
+<li><p>在<code>ViewController.m</code>中为<code>UIImageView</code>添加名为<code>mImageView</code>的<code>IBOutlet</code>，为<code>UITextView</code>添加名为<code>mTextView</code>的<code>IBOutlet</code>，并为<code>UIbutton</code>添加一个名为<code>selectImageButtonClicked</code>的<code>IBAction</code>，添加完之后<code>ViewController.m</code>的代码应该如下图所示</p>
+<p>  <img src="!--￼8--&gt;/images/53CF4C8D-36E9-4128-BB40-BAE76BC79CA4.png" alt=""></p>
+</li>
+<li><p>基础的界面布局终于弄完了，来正式开始代码部分。首先，在<code>ViewController.m</code>中引入<code>TesseractOCR/TesseractOCR.h</code>和<code>TesseractOCR/UIImage+G8FixOrientation.h</code>，然后，为<code>ViewController</code>添加一些相关的协议，代码：</p>
+</li>
+</ul>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#import <span class="meta-string">&lt;TesseractOCR/TesseractOCR.h&gt;</span></span></span><br><span class="line"><span class="meta">#import <span class="meta-string">&lt;TesseractOCR/UIImage+G8FixOrientation.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">@interface</span> <span class="title">ViewController</span>()</span></span><br><span class="line">&lt;<span class="built_in">UINavigationControllerDelegate</span>,<span class="built_in">UIImagePickerControllerDelegate</span>,<span class="built_in">UIActionSheetDelegate</span>,G8TesseractDelegate&gt;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>在<code>- (IBAction)selectImageButtonClicked:(id)sender</code>方法中添加以下实现，使用<code>UIActionSheet</code>来实现选择照片的弹出框并实现<code>UIActionSheet</code>的代理方法</li>
+</ul>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#pragma mark - Event</span></span><br><span class="line">- (<span class="keyword">IBAction</span>)selectImageButtonClicked:(<span class="keyword">id</span>)sender &#123;</span><br><span class="line">    <span class="built_in">UIActionSheet</span> *actionSheet = [[<span class="built_in">UIActionSheet</span> alloc] initWithTitle:<span class="literal">nil</span></span><br><span class="line">                                                             delegate:<span class="keyword">self</span></span><br><span class="line">                                                    cancelButtonTitle:<span class="string">@"取消"</span></span><br><span class="line">                                               destructiveButtonTitle:<span class="literal">nil</span></span><br><span class="line">                                                    otherButtonTitles:<span class="string">@"拍照"</span>,<span class="string">@"从相册选取"</span>, <span class="literal">nil</span>];</span><br><span class="line">    [actionSheet showInView:<span class="keyword">self</span>.view];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">#pragma mark - UIActionSheetDelegate</span></span><br><span class="line">- (<span class="keyword">void</span>)actionSheet:(<span class="built_in">UIActionSheet</span> *)actionSheet clickedButtonAtIndex:(<span class="built_in">NSInteger</span>)buttonIndex &#123;</span><br><span class="line">    <span class="keyword">if</span> (buttonIndex == <span class="number">0</span>) &#123;</span><br><span class="line">        [<span class="keyword">self</span> shootPicture];</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        [<span class="keyword">self</span> selectExistingPicture];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//拍照</span></span><br><span class="line">-(<span class="keyword">void</span>)shootPicture &#123;</span><br><span class="line">    [<span class="keyword">self</span> getPictureFromSource:<span class="built_in">UIImagePickerControllerSourceTypeCamera</span>];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//从相册选择照片</span></span><br><span class="line">- (<span class="keyword">void</span>)selectExistingPicture &#123;</span><br><span class="line">    [<span class="keyword">self</span> getPictureFromSource:<span class="built_in">UIImagePickerControllerSourceTypePhotoLibrary</span>];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//创建和配置图像选取器，使用传入的sourceType确定调出照相机还是媒体库</span></span><br><span class="line">- (<span class="keyword">void</span>)getPictureFromSource:(<span class="built_in">UIImagePickerControllerSourceType</span>)sourceType &#123;</span><br><span class="line">    <span class="built_in">NSArray</span> *mediaTypes = [<span class="built_in">UIImagePickerController</span> availableMediaTypesForSourceType:sourceType];</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">if</span> ([<span class="built_in">UIImagePickerController</span> isSourceTypeAvailable:sourceType] &amp;&amp; [mediaTypes count] &gt; <span class="number">0</span>) &#123;</span><br><span class="line">        <span class="built_in">NSArray</span> *mediaTypes = [<span class="built_in">UIImagePickerController</span> availableMediaTypesForSourceType:sourceType];</span><br><span class="line">        <span class="built_in">UIImagePickerController</span> *picker = [[<span class="built_in">UIImagePickerController</span> alloc]init];</span><br><span class="line">        picker.mediaTypes = mediaTypes;</span><br><span class="line">        picker.delegate = <span class="keyword">self</span>;</span><br><span class="line">        picker.allowsEditing = <span class="literal">NO</span>;</span><br><span class="line">        picker.sourceType = sourceType;</span><br><span class="line">        [<span class="keyword">self</span> presentViewController:picker animated:<span class="literal">YES</span> completion:<span class="literal">nil</span>];</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="built_in">UIAlertView</span> *alert = [[<span class="built_in">UIAlertView</span> alloc]initWithTitle:<span class="string">@"错误"</span> message:<span class="string">@"设备不支持!"</span> delegate:<span class="literal">nil</span> cancelButtonTitle:<span class="string">@"确定"</span> otherButtonTitles: <span class="literal">nil</span>];</span><br><span class="line">        [alert show];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">#pragma mark - UIImagePickerControllerDelegate</span></span><br><span class="line">- (<span class="keyword">void</span>)imagePickerController:(<span class="built_in">UIImagePickerController</span> *)picker didFinishPickingMediaWithInfo:(<span class="built_in">NSDictionary</span> *)info &#123;</span><br><span class="line">    <span class="built_in">UIImage</span> *image = [info objectForKey:<span class="built_in">UIImagePickerControllerOriginalImage</span>];</span><br><span class="line">    <span class="keyword">self</span>.mImageView.image = image;</span><br><span class="line">    [<span class="keyword">self</span> recognition:image];</span><br><span class="line">    [picker dismissViewControllerAnimated:<span class="literal">YES</span> completion:<span class="literal">nil</span>];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (<span class="keyword">void</span>)imagePickerControllerDidCancel:(<span class="built_in">UIImagePickerController</span> *)picker &#123;</span><br><span class="line">    [picker dismissViewControllerAnimated:<span class="literal">YES</span> completion:<span class="literal">nil</span>];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>上面的一大段代码用来获取照片，<code>UIImagePickerControllerDelegate</code>里的<code>- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info</code>回调取得照片后，开始处理和识别照片，这里只是最基础的处理照片，代码如下：</li>
+</ul>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br></pre></td><td class="code"><pre><span class="line">- (<span class="keyword">void</span>)recognition:(<span class="built_in">UIImage</span> *)image &#123;</span><br><span class="line">    <span class="built_in">dispatch_async</span>(dispatch_get_global_queue(<span class="number">0</span>, <span class="number">0</span>), ^(<span class="keyword">void</span>) &#123;</span><br><span class="line">        <span class="comment">// Languages are used for recognition (e.g. eng, ita, etc.). Tesseract engine</span></span><br><span class="line">        <span class="comment">// will search for the .traineddata language file in the tessdata directory.</span></span><br><span class="line">        <span class="comment">// For example, specifying "eng+ita" will search for "eng.traineddata" and</span></span><br><span class="line">        <span class="comment">// "ita.traineddata". Cube engine will search for "eng.cube.*" files.</span></span><br><span class="line">        <span class="comment">// See https://code.google.com/p/tesseract-ocr/downloads/list.</span></span><br><span class="line">        </span><br><span class="line">        <span class="comment">// Create your G8Tesseract object using the initWithLanguage method:</span></span><br><span class="line">        G8Tesseract *tesseract = [[G8Tesseract alloc] initWithLanguage:<span class="string">@"eng"</span>];</span><br><span class="line">        </span><br><span class="line">        <span class="comment">// Optionaly: You could specify engine to recognize with.</span></span><br><span class="line">        <span class="comment">// G8OCREngineModeTesseractOnly by default. It provides more features and faster</span></span><br><span class="line">        <span class="comment">// than Cube engine. See G8Constants.h for more information.</span></span><br><span class="line">        tesseract.engineMode = G8OCREngineModeTesseractOnly;</span><br><span class="line">        </span><br><span class="line">        <span class="comment">// Set up the delegate to receive Tesseract's callbacks.</span></span><br><span class="line">        <span class="comment">// self should respond to TesseractDelegate and implement a</span></span><br><span class="line">        <span class="comment">// "- (BOOL)shouldCancelImageRecognitionForTesseract:(G8Tesseract *)tesseract"</span></span><br><span class="line">        <span class="comment">// method to receive a callback to decide whether or not to interrupt</span></span><br><span class="line">        <span class="comment">// Tesseract before it finishes a recognition.</span></span><br><span class="line">        tesseract.delegate = <span class="keyword">self</span>;</span><br><span class="line">        </span><br><span class="line">        <span class="comment">// Optional: Limit the character set Tesseract should try to recognize from</span></span><br><span class="line">        <span class="comment">//    tesseract.charWhitelist = @"0123456789";</span></span><br><span class="line">        tesseract.charWhitelist = <span class="string">@"@.()&#123;&#125;/\\!*&amp;#0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"</span>;</span><br><span class="line">        </span><br><span class="line">        <span class="comment">// This is wrapper for common Tesseract variable kG8ParamTesseditCharWhitelist:</span></span><br><span class="line">        <span class="comment">// [tesseract setVariableValue:@"0123456789" forKey:kG8ParamTesseditCharBlacklist];</span></span><br><span class="line">        <span class="comment">// See G8TesseractParameters.h for a complete list of Tesseract variables</span></span><br><span class="line">        </span><br><span class="line">        <span class="comment">// Optional: Limit the character set Tesseract should not try to recognize from</span></span><br><span class="line">        <span class="comment">//tesseract.charBlacklist = @"OoZzBbSs";</span></span><br><span class="line">        </span><br><span class="line">        <span class="comment">// Specify the image Tesseract should recognize on</span></span><br><span class="line">        tesseract.image = [[image fixOrientation] g8_blackAndWhite];</span><br><span class="line">        </span><br><span class="line">        <span class="comment">// Optional: Limit the area of the image Tesseract should recognize on to a rectangle</span></span><br><span class="line">        <span class="comment">//    tesseract.rect = CGRectMake(20, 20, 100, 100);</span></span><br><span class="line">        </span><br><span class="line">        <span class="comment">// Optional: Limit recognition time with a few seconds</span></span><br><span class="line">        tesseract.maximumRecognitionTime = <span class="number">2.0</span>;</span><br><span class="line">        </span><br><span class="line">        <span class="comment">// Start the recognition</span></span><br><span class="line">        [tesseract recognize];</span><br><span class="line">        </span><br><span class="line">        <span class="comment">// Retrieve the recognized text</span></span><br><span class="line">        <span class="built_in">NSLog</span>(<span class="string">@"%@"</span>, [tesseract recognizedText]);</span><br><span class="line">        </span><br><span class="line">        <span class="built_in">dispatch_async</span>(dispatch_get_main_queue(), ^(<span class="keyword">void</span>) &#123;</span><br><span class="line">            <span class="keyword">self</span>.mTextView.text = [tesseract recognizedText];</span><br><span class="line">        &#125;);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// You could retrieve more information about recognized text with that methods:</span></span><br><span class="line">        <span class="built_in">NSArray</span> *characterBoxes = [tesseract recognizedBlocksByIteratorLevel:G8PageIteratorLevelSymbol];</span><br><span class="line">        <span class="built_in">NSArray</span> *paragraphs = [tesseract recognizedBlocksByIteratorLevel:G8PageIteratorLevelParagraph];</span><br><span class="line">        </span><br><span class="line">        <span class="built_in">NSLog</span>(<span class="string">@"characterBoxes = %@ \n paragraphs = %@ \n"</span>, characterBoxes,paragraphs);</span><br><span class="line">    &#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li><p>关于<a href="https://github.com/gali8/Tesseract-OCR-iOS" target="_blank" rel="external">Tesseract-OCR-iOS</a>的使用，代码中的英文注释已经解释的很详细了，也可以参照<a href="https://github.com/gali8/Tesseract-OCR-iOS/wiki/Using-Tesseract-OCR-iOS" target="_blank" rel="external">Using Tesseract OCR iOS</a>。</p>
+</li>
+<li><p>最基础的使用就介绍完了，下篇会介绍一些关于图片处理的问题，在OCR识别前先对图片进行一些处理会提升识别准确度和识别效率。常见的处理方式有：</p>
+<ul>
+<li>二值化</li>
+<li>灰度</li>
+<li>倾斜校正</li>
+<li>图片切割 </li>
+</ul>
+<p>也可以自行谷歌去解决相关问题。</p>
+</li>
+<li><p>最后，附上本文的demo，<a href="https://github.com/meway1991/TestOCR" target="_blank" rel="external">下载地址</a>。</p>
+</li>
+</ul>
+<p>###关于OCR的资料</p>
+<blockquote>
+<ul>
+<li>来自<a href="https://github.com" target="_blank" rel="external">GitHub</a>的<a href="https://github.com/gali8/Tesseract-OCR-iOS" target="_blank" rel="external">Tesseract-OCR-iOS</a></li>
+<li>来自<a href="http://www.raywenderlich.com" target="_blank" rel="external">raywenderlich</a>的<a href="http://www.raywenderlich.com/93276/implementing-tesseract-ocr-ios" target="_blank" rel="external">Tesseract OCR Tutorial</a></li>
+<li>来自<a href="http://www.cocoachina.com" target="_blank" rel="external">cocoachina</a>的<a href="http://www.cocoachina.com/ios/20150708/12463.html" target="_blank" rel="external">Tesseract OCR（光学字符识别）教程</a></li>
+</ul>
+</blockquote>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://luser.cn/2015/10/14/2015-10-14-create-ocr-app-on-ios-1/" data-id="ciphughzk0004zs06uc1wi7pv" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2015/10/16/2015-10-16-rich-dad-poor-dad-reading-notes/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          《富爸爸穷爸爸》读书笔记
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2015/10/13/2015-10-13-octopress-promote-speed/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Octopress提速</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Octopress/">Octopress</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/iOS/">iOS</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/iOS/OCR/">OCR</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/生活随笔/">生活随笔</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/生活随笔/Octopress/">Octopress</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/读书笔记/">读书笔记</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/06/">June 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/10/">October 2015</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2016/06/16/hello-world/">Hello World</a>
+          </li>
+        
+          <li>
+            <a href="/2015/10/16/2015-10-16-rich-dad-poor-dad-reading-notes/">《富爸爸穷爸爸》读书笔记</a>
+          </li>
+        
+          <li>
+            <a href="/2015/10/14/2015-10-14-create-ocr-app-on-ios-1/">搭建iOS上的OCR应用</a>
+          </li>
+        
+          <li>
+            <a href="/2015/10/13/2015-10-13-octopress-promote-speed/">Octopress提速</a>
+          </li>
+        
+          <li>
+            <a href="/2015/10/10/2015-10-10-ibeacon-1/">ibeacon官方文档翻译（上）</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2016 孟伟<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+  </div>
+</body>
+</html>

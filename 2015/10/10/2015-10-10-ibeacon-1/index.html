@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>ibeacon官方文档翻译（上） | 孟伟的技术博客</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="ibeacon官方文档翻译">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ibeacon官方文档翻译（上）">
+<meta property="og:url" content="http://luser.cn/2015/10/10/2015-10-10-ibeacon-1/index.html">
+<meta property="og:site_name" content="孟伟的技术博客">
+<meta property="og:description" content="ibeacon官方文档翻译">
+<meta property="og:updated_time" content="2015-10-14T02:25:43.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="ibeacon官方文档翻译（上）">
+<meta name="twitter:description" content="ibeacon官方文档翻译">
+  
+    <link rel="alternate" href="/atom.xml" title="孟伟的技术博客" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">孟伟的技术博客</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">野生程序猿修炼之道</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://luser.cn"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-2015-10-10-ibeacon-1" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2015/10/10/2015-10-10-ibeacon-1/" class="article-date">
+  <time datetime="2015-10-10T09:58:00.000Z" itemprop="datePublished">2015-10-10</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/iOS/">iOS</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      ibeacon官方文档翻译（上）
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>##iBeacon介绍</p>
+<p>iBeacon是苹果在2013年WWDC上推出一项基于蓝牙4.0（Bluetooth LE | BLE | Bluetooth Smart）的精准微定位技术，当你的手持设备靠近一个Beacon基站时，设备就能够感应到Beacon信号，范围可以从几毫米到50米。因为是一种定位技术，苹果将iBeacon相关的接口放到了<code>CoreLocation.framework</code>。<a href="https://developer.apple.com/library/ios/documentation/UserExperience/Conceptual/LocationAwarenessPG/Introduction/Introduction.html#//apple_ref/doc/uid/TP40009497-CH1-SW1" target="_blank" rel="external">链接</a></p>
+<p>下面是该文档内关于iBeacon的翻译：</p>
+<a id="more"></a>
+<p>###iBeacon技术提升用户的定位体验</p>
+<blockquote>
+<p>iBeacon技术提供了一种方法来创建和监控Beacon基站：使用蓝牙低功耗无线技术发送特定识别信息。蓝牙低功耗Beacon基站发射相同的UUID形成一片Beacon基站区域，你的应用程序可以通过Core Location区域监控(region monitoring)获得监控支持。Beacon基站可以通过它发射的其他附加信息把具有相同UUID的基站区分开来。当一个Beacon基站在用户的设备范围内，app也可以监视到距基站的相对距离。因此，可以使用由Beacon基站发射的信息，来增强某一特定位置用户的体验。例如，一个博物馆app可以监测到放置在博物馆重要展品附近的Beacon基站，当一个用户接近一个特定的展品，该app可以根据到Beacon基站的相对距离作为线索，以提供有关该展品而不是另一个展品的信息。</p>
+</blockquote>
+<p>###区域监测和iBeacon</p>
+<blockquote>
+<p><code>CoreLocation.framework</code>提供了两种方法来检测用户进入和退出进入特定区域： <code>地理区域监控</code>(iOS 4.0 and later and OS X v10.8 and later) 和<code>Beacon基站区域监控</code>(iOS 7.0 and later)。一个地理区域是指在地球表面由一个已知点和特定半径所构成的圆所限定的区域。与之对比，Beacon基站区域是由设备到蓝牙低能耗基站的距离定义的。Beacon基站本身仅仅是一种发射蓝牙低能耗效载荷的设备 – 你甚至可以把你的iOS设备通过<code>CoreBluetooth.framework</code>变成一个Beacon基站。App可以使用区域监测去感知用户跨越地域界限或者进出一个Beacon基站范围。当一个Beacon基站在iOS设备范围内，app还可以监控到Beacon基站的相对距离。您可以使用这些功能来开发多种基于位置的创新app。由于地域区域和Beacon基站区域不同，选择何种区域监控很可能会依赖于您的应用程序的使用情况。在iOS中，您的应用程序关联的区域的监控将一直存在，即使app没有运行。如果身处于区域边界而app没有运行，那么该应用程序会被重新启动到后台来处理事件。同样，如果某一事件发生时该应用程序暂停了，它将被唤醒并给出一个较短的时间（大约10秒）来处理该事件。有必要时，一个app可以通过<code>UIApplication</code>类里的<code>beginBackgroundTaskWithExpirationHandler:</code>方法来申请更多后台常驻时间。</p>
+</blockquote>
+<p>###Determining the Availability of Region Monitoring </p>
+<blockquote>
+<p>在尝试监测某一区域前，您的应用程序应该检查当前设备是否支持区域监测。这里有一些监测区域可能无法使用的原因：</p>
+<ul>
+<li>该设备不具有支持区域监测的必要的硬件。</li>
+<li>用户拒绝授权应用程序使用区域监控。</li>
+<li>用户在设置里停用定位服务。</li>
+<li>用户在设置里禁用后台程序刷新，无论是对设备或您的app。</li>
+<li>设备处于飞行模式，不能打开必要的硬件。</li>
+</ul>
+<p>iOS 7.0之后，当试图监视区域之前应该先调用<code>CLLocationManager</code>类的<code>isMonitoringAvailableForClass:</code>和<code>authorizationStatus</code>方法。<code>isMonitoringAvailableForClass:</code>方法告诉你底层的硬件是否支持指定类的区域监测。如果该方法返回NO，则您的应用程序无法在设备上使用区域监测。如果返回YES，调用<code>authorizationStatus</code>方法来确定应用程序是否正在授权使用定位服务。如果授权状态为<code>kCLAuthorizationStatusAuthorized</code>，您的应用程序可以接收其注册的某区域的过境通知。如果授权状态为任何其他值，则应用程序不会收到这些通知。</p>
+<p>注: 即使一个应用程序无权使用区域监测，它仍然可以注册区域以供以后使用。如果用户随后给应用程序授权，这些区域监测都将开始，并产生后续的过境通知。如果应用程序未被授权而你不想注册监测区域,可以使用<code>locationManager:didChangeAuthorizationStatus:</code>委托方法检测应用程序状态的变化和删除区域。</p>
+<p>最后,如果你的应用程序需要在后台处理位置更新,一定要检查<code>UIApplication</code>类的<code>backgroundRefreshStatus</code>属性。您可以使用这个属性的值来确定是可以后台刷新的,如果不是则可以提醒用户。注意,当后台应用刷新设置为全局禁用或专门为你的应用程序禁用时，系统不会通过区域通知叫醒你的应用程序。</p>
+</blockquote>
+<p>###Monitoring Beacon Regions</p>
+<blockquote>
+<p>Beacon区域监测是使用iOS设备的机载无线电检测来监测用户是否在发射着iBeacon信息的蓝牙低能耗设备的附近。同地理区域监测一样 ，当用户进入或退出一个Beacon区域时，您可以使用此功能来生成通知或提供其他相关信息。相比被固定的地理坐标,Beacon基站区域可以通过以下值被设备到蓝牙低能耗基站的接近度识别:</p>
+<ul>
+<li><code>proximity UUID</code>(全局惟一标识符)，以一个128位的值唯一标识一个或多个Beacon基站为特定类型或特定的组织。</li>
+<li><code>major</code>，一个16位的无符号整数,可以将具有相同<code>proximity UUID</code>的Beacon基站组织联系起来。</li>
+<li><code>minor</code> ，一个16位的无符号整数,区分<code>proximity UUID</code>和<code>major</code>相同的Beacon基站。</li>
+</ul>
+<p>由于一个Beacon区域可以放置多个Beacon基站,Beacon区域监测支持几个有趣的用例。例如,一个致力于在特定的百货商店提高客户体验的应用可以使用相同的<code>proximity UUID</code>来监控所有连锁百货商店。当用户接近商店，app检测到商店的Beacon基站,并使用这些Beacon基站的<code>major</code>和<code>minor</code>的值来确定附加信息,如用户到的是哪个门店或者顾客在门店的哪个区域。(注意,虽然每一个Beacon基站必须发射<code>proximity  UUID</code>,但<code>major</code>和<code>minor</code>的值是可选的。)</p>
+</blockquote>
+<p>###Defining a Beacon Region to Be Monitored </p>
+<blockquote>
+<p>要开始监测一个Beacon区域，首先得定义这个区域然后注册到系统里。你可以用<code>CLBeaconRegion</code>类的适当初始化方法定义一个Beacon区域。当你创建一个<code>CLBeaconRegion</code>对象,需要指定<code>proximityUUID</code>,<code>major</code>和<code>minor</code>的属性(<code>proximityUUID</code>是必需的,<code>major</code>和<code>minor</code>的值是可选的)。您还必须提供一个字符串,用来唯一标识该Beacon区域,这样您就可以在代码中引用它。注意,Beacon区域的标识符与Beacon基站发射的识别信息无关。</p>
+<p>调用<code>CLLocationManager</code>对象的<code>startMonitoringForRegion:</code>方法来注册一个Beacon区域。以下是代码：</p>
+</blockquote>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">- (<span class="keyword">void</span>)registerBeaconRegionWithUUID:(<span class="built_in">NSUUID</span> *)proximityUUID</span><br><span class="line">  andIdentifier:(<span class="built_in">NSString</span>*)identifier &#123;</span><br><span class="line">     <span class="comment">// Create the beacon region to be monitored.</span></span><br><span class="line">     CLBeaconRegion *beaconRegion = [[CLBeaconRegion alloc]</span><br><span class="line">        initWithProximityUUID:proximityUUID</span><br><span class="line">                   identifier:identifier];</span><br><span class="line">     <span class="comment">// Register the beacon region with the location manager.</span></span><br><span class="line">     [<span class="keyword">self</span>.locManager startMonitoringForRegion:beaconRegion];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>同地理区域监控一样，对一个已经经过授权的app来说，beacon区域监控也会在注册后立即开始。当用户的设备检测到某个基站发射的识别信息(<code>proximity UUID</code>, <code>major</code> value, and <code>minor</code> value) 和注册的基站区域信息一样时，系统会为您的app生成适当的区域事件。<br>注：只使用一个UUID值来配置一个beacon区域是不可取的。这样做会使得当设备进入任何具有该UUID范围内时会被激活。在进入基站区域后，你又要开始扫描附近的beacon基站来获取有关beacon基站的详细信息。</p>
+</blockquote>
+<p>###Handling Boundary-Crossing Events for a Beacon Region </p>
+<blockquote>
+<p>当用户进入到注册的beacon基站区域，location manager 会调用<code>locationManager:didEnterRegion:</code>作为它的回调函数。类似的，当用户不再处于任何已注册过的beacon区域，  location manager 会调用<code>locationManager:didExitRegion:</code> 作为它的回调函数。注意，用户必须穿越区域的边缘才能触发这些回调。实际上，如果用户已经在区域范围内了， location manager 不会调用<code>locationManager:didEnterRegion:</code>方法。你可以通过实现这些委托方法来适当的提醒用户或者展现location-specific UI。你可以通过设定beacon区域的<code>notifyOnEntry</code>和<code>notifyOnExit</code>属性（默认值是YES）来指定哪些穿过边境事件（越界事件）需要通知你的app。例如，如果你只想当用户离开某个区域范围的时候得到通知，你可以设定该区域的<code>notifyOnEntry</code>值为NO。你也可以推迟通知用户已经进入某区域直到用户点亮设备的屏幕。要这么做，只需要简单的在注册beacon区域时设置beacon区域的<code>notifyEntryStateOnDisplay</code>值为YES并且设置<code>notifyOnEntry</code>值为NO。</p>
+</blockquote>
+<p>###Determining the Proximity of a Beacon Using Ranging </p>
+<blockquote>
+<p>当用户的设备进入某个注册过的beacon区域时，apps可以用<code>CLLocationManager</code>的<code>startRangingBeaconsInRegion:</code>方法来确定该区域内的一个或多个beacon基站的相对距离，并且当距离发生变化时发出通知。（当试图扫描某区域的beacon基站时，请务必先调用<code>isRangingAvailable</code>方法。）对很多app来说，到beacon基站的相对距离是相当有用的。例如，某博物馆在每个展位上放置了一个beacon基站，一个博物馆特定的app可以根据到展位的相对位置来提供相应的信息。location manager 调用<code>locationManager:didRangeBeacons:inRegion:</code>作为它的回调函数，无论是进入该区域，退出该区域，或者距离发生变化。该委托函数提供了一个元素为CLBeacon对象的数组，代表着当前beacon范围内扫描到的beacon基站。该数组按设备到基站的相对距离排序，最近的基站排列在前。你可以使用这些对象的信息去确定用户到各个基站的接近层度。<code>CLBeacon</code>对象的<code>proximity</code>属性给出了一般意义上到基站的相对距离。</p>
+<p>注：beacon扫描取决于检测蓝牙低功耗的无线电信号的强度，并且这些信号的精度衰减（或减少）受墙壁，门窗，以及其他物理对象影响。该信号也受水的影响，代表人体本身也会影响这些信号。规划您的iBeacon部署时要注意这些因素是很重要的，因为他们会影响每个信标的<code>proximity</code>值。如果需要的话，可以使用每个<code>CLBeacon</code>对象反馈的<code>accuracy</code>和<code>rssi</code>值来调整放置beacon基站的位置。</p>
+<p>通过本节前面所述的博物馆app的例子，以下代码展示了如何使用一个beacon基站的proximity属性去确定用户的设备到基站的相对距离。该代码通过一个UI，提供了距离用户最近的相关特定博物馆展位的详细信息（由<code>CLProximityNear</code>常量定义）。</p>
+</blockquote>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Delegate method from the CLLocationManagerDelegate protocol.</span></span><br><span class="line">- (<span class="keyword">void</span>)locationManager:(CLLocationManager *)manager</span><br><span class="line">          didRangeBeacons:(<span class="built_in">NSArray</span> *)beacons</span><br><span class="line">                 inRegion:(CLBeaconRegion *)region &#123;</span><br><span class="line">     <span class="keyword">if</span> ([beacons count] &gt; <span class="number">0</span>) &#123;</span><br><span class="line">        CLBeacon *nearestExhibit = [beacons firstObject];</span><br><span class="line">        <span class="comment">// Present the exhibit-specific UI only when</span></span><br><span class="line">        <span class="comment">// the user is relatively close to the exhibit.</span></span><br><span class="line">        <span class="keyword">if</span> (CLProximityNear == nearestExhibit.proximity) &#123;</span><br><span class="line">            [<span class="keyword">self</span> presentExhibitInfoWithMajorValue:nearestExhibit.major.integerValue]; &#125;</span><br><span class="line">        <span class="keyword">else</span> &#123;</span><br><span class="line">           [<span class="keyword">self</span> dismissExhibitInfo];</span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>为了使你的应用程序显示结果准确，请只当你的app在前台运行时使用基站扫描。例如设备在用户的手里并且设备与基站之间只有较少障碍物。当用户主动使用该设备并进入基站信号范围时，在前台运行也促进了更好的电池寿命管理。</p>
+<p>注意：如果有多个基站设备发射相同的<code>proximityUUID</code>，<code>major</code>和<code>minor</code>，它们可能会由于具有不同的相近度和精度而调用<code>locationManager:didRangeBeacons:inRegion:</code>方法。建议是，每个基站装置配置唯一标识。此外，如果你扫描一台被配置为beacon基站的iOS设备，可能会在短时期内，<code>locationManager:didRangeBeacons:inRegion:</code>方法报告扫描到两个设备具有相同的<code>proximityUUID</code>，<code>major</code>和<code>minor</code>。这是因为iOS设备的蓝牙标识周期性变化暴露出来的隐私问题。基于原始蓝牙标识符的<code>proximity</code>属性会在标示符变化后2秒内变为<code>CLProximityUnknown</code>。在10秒内，该标识符解决并且只反馈一个基站区域。</p>
+</blockquote>
+<p>####以上是关于监控和扫描beacon基站的翻译，接下来会翻译配置一个ios设备为ibeacon基站的相关内容。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://luser.cn/2015/10/10/2015-10-10-ibeacon-1/" data-id="ciphughza0001zs06txtdkrfd" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2015/10/13/2015-10-13-octopress-promote-speed/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          Octopress提速
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2015/10/10/2015-10-10-thefirstblog/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">第一篇博客</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Octopress/">Octopress</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/iOS/">iOS</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/iOS/OCR/">OCR</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/生活随笔/">生活随笔</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/生活随笔/Octopress/">Octopress</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/读书笔记/">读书笔记</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/06/">June 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/10/">October 2015</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2016/06/16/hello-world/">Hello World</a>
+          </li>
+        
+          <li>
+            <a href="/2015/10/16/2015-10-16-rich-dad-poor-dad-reading-notes/">《富爸爸穷爸爸》读书笔记</a>
+          </li>
+        
+          <li>
+            <a href="/2015/10/14/2015-10-14-create-ocr-app-on-ios-1/">搭建iOS上的OCR应用</a>
+          </li>
+        
+          <li>
+            <a href="/2015/10/13/2015-10-13-octopress-promote-speed/">Octopress提速</a>
+          </li>
+        
+          <li>
+            <a href="/2015/10/10/2015-10-10-ibeacon-1/">ibeacon官方文档翻译（上）</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2016 孟伟<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+  </div>
+</body>
+</html>
